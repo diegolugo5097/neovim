@@ -2,7 +2,8 @@ syntax on
 set mouse=a
 set noerrorbells
 set sw=2
-set rnu
+set number
+"set rnu
 set smartindent
 set numberwidth=1
 set nowrap
@@ -20,7 +21,17 @@ set shortmess+=c
 set cursorline
 set nocompatible
 set termguicolors
-"set completeopt=noselect,menuone
+set completeopt=noselect,menuone
+set list
+set listchars=
+set listchars+=tab:░\ 
+set listchars+=trail:·
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=nbsp:⣿
+set statusline=%<%f\ %y%m%r%=%-12.(%l:%c%)\ %-3.($%B%)\ %-5L\ %P
+"set listchars=tab:>\ ,trail:-,nbsp:+
+set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize
 " set tabs to have 4 spaces
 set ts=4
 " indent when moving to the next line while writing code
@@ -36,47 +47,38 @@ set showmatch
 " enable all Python syntax highlighting features
 let python_highlight_all = 1
 
+if has("nvim")
+  " exit terminal mode
+  tnoremap <Esc> <C-\><C-n>
+  " change ShaDa path
+  set shada+=n~/.cache/vim/shada
+endif
+" Highlight Trailing Whitespace
+"
+" Track which buffers have been created, and set the highlighting only once.
+autocmd VimEnter * autocmd WinEnter * let w:created=1
+autocmd VimEnter * let w:created=1
+highlight WhitespaceEOL ctermbg=red ctermfg=white guibg=#592929
+autocmd WinEnter *
+  \ if !exists('w:created') | call matchadd('WhitespaceEOL', '\s\+$') | endif
+call matchadd('WhitespaceEOL', '\s\+$')
 
 call plug#begin('~/.local/share/nvim/plugged')
 
 "Themes
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'ayu-theme/ayu-vim'
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'adrian5/oceanic-next-vim'
-Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
-Plug 'mhartington/oceanic-next'
 Plug 'glepnir/oceanic-material'
-Plug 'morhetz/gruvbox'
-Plug 'projekt0n/github-nvim-theme'
-Plug 'yashguptaz/calvera-dark.nvim'
-Plug 'ghifarit53/tokyonight-vim'
-Plug 'RobertYan/monokai-soda'
-Plug 'rakr/vim-one'
-Plug 'srcery-colors/srcery-vim'
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
-Plug 'rakr/vim-two-firewatch'
-Plug 'jacoborus/tender.vim'
-Plug 'sickill/vim-monokai'
-Plug 'rakr/vim-one'
-Plug 'rishikanthc/skyfall-vim'
-Plug 'joshdick/onedark.vim'
-Plug 'eddyekofo94/gruvbox-flat.nvim'
+Plug 'marko-cerovac/material.nvim'
 
 "Visual
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'dikiaap/minimalist'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'sheerun/vim-polyglot'
 
 "Functionality
 Plug 'vim-python/python-syntax'
-Plug 'preservim/nerdtree'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -84,12 +86,18 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'honza/vim-snippets'
 Plug 'mxw/vim-jsx'
 Plug 'yuezk/vim-js'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'davidhalter/jedi-vim'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'posva/vim-vue'
+Plug 'othree/html5.vim'
+Plug 'leafOfTree/vim-vue-plugin'
+Plug 'itspriddle/vim-jquery'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 "Code Modification
 Plug 'scrooloose/nerdcommenter'
@@ -100,38 +108,24 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 Plug 'cburroughs/pep8.py'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'leafoftree/vim-vue-plugin'
+Plug 'vim-scripts/loremipsum'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 call plug#end()
 
-set background=dark
-let ayucolor="mirage"
-let g:oceanic_bold = 0
-let g:oceanic_for_polyglot = 1
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'ocean-community'
-let g:gruvbox_costract_dark="hard"
-let g:calvera_italic_comments = 1
-let g:calvera_italic_keywords = 1
-let g:calvera_italic_functions = 1
-let g:calvera_contrast = 1
-let g:tokyonight_style = 'storm' " available: night, storm
-let g:tokyonight_enable_italic = 1
-let g:oceanic_material_transparent_background = 0
 let g:oceanic_material_allow_bold = 0
 let g:oceanic_material_allow_italic = 1
-let g:gruvbox_italic = 1
 let g:oceanic_material_allow_underline = 1
 let g:oceanic_material_allow_undercurl = 1
 let g:oceanic_material_allow_reverse = 0
 let g:oceanic_material_background = "darker"
+let g:oceanic_material_transparent_background = 1
 let g:oceanic_next_terminal_bold = 1
 let g:oceanic_next_terminal_italic = 1
-let g:one_allow_italics = 1 " I love italic for comments
-let g:srcery_italic = 1
-let g:srcery_red = '#FF0000'
 
-"transparent config
-"au ColorScheme * hi Normal ctermbg=none guibg=none
-"au ColorScheme myspecialcolors hi Normal ctermbg=red guibg=redhi Normal guibg=NONE ctermbg=NONE
+let g:material_style = 'darker'
+
 
 hi LineNr guibg=NONE ctermbg=NONE
 hi SignColumn guibg=NONE ctermbg=NONE
@@ -143,73 +137,36 @@ if exists('termguicolors')
    set termguicolors
 endif
 
-colorscheme gruvbox8
+colorscheme oceanic_material
+
+command! -nargs=? -range=% -complete=custom,s:StripCompletionOptions
+      \ StripTrailingWhitespace <line1>,<line2>call s:StripTrailingWhitespace(<f-args>)
+
+function! s:StripTrailingWhitespace(...) abort
+  let confirm = a:0
+  execute a:firstline . ',' . a:lastline . 's/\s\+$//e' . (confirm ? 'c' : '')
+endfunction
+
+function! s:StripCompletionOptions(A,L,P) abort
+  return "-confirm"
+endfunction
 
 "leader
 let mapleader = " "
 
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox8',
+      \ 'colorscheme': 'oceanic_material',
       \ }
+
 
 "Airline
 let g:airline#extensions#tabline#enabled = 1  " show open buffers (like tabs)
 let g:airline#extensions#tabline#fnamemod = ':t'  " Show only filename
 let g:airline_powerline_fonts = 1 " Change separetors to be triangles
-let g:airline_theme='minimalist'
+let g:airline_theme='onedark'
 
-"NERDTree
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"Keymap of the file browser
-let g:NERDTreeChDirMode = 2 "Change the current directory to the current node father
-let g:neoformat_try_formatprg = 1
-map <leader><tab> :NERDTreeToggle<CR>
-nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
+"map <leader><tab> :CocCommand explorer<CR>
 
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
-
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-
-let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
-let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1
-
-let g:NERDTreeDisableFileExtensionHighlight = 1
-let g:NERDTreeDisableExactMatchHighlight = 1
-let g:NERDTreeDisablePatternMatchHighlight = 1
-
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-
-let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
-
-"* Disable Highlight for specific file extension vim
-" If you have vim-devicons you can customize your icons for each file type.
-let g:NERDTreeExtensionHighlightColor = {} "this line is needed to avoid error
-let g:NERDTreeExtensionHighlightColor['css'] = '' "assigning it to an empty string will skip highlighd
-
-let g:NERDTreeLimitedSyntax = 1
-
-let g:NERDTreeSyntaxDisableDefaultExtensions = 1
-let g:NERDTreeSyntaxDisableDefaultExactMatches = 1
-let g:NERDTreeSyntaxDisableDefaultPatternMatches = 1
-
-" set g:NERDTreeExtensionHighlightColor if you want a custom color instead of the default one
-let g:NERDTreeSyntaxEnabledExtensions = ['hbs', 'lhs'] " enable highlight to .hbs and .lhs files with default colors
-let g:NERDTreeSyntaxEnabledExactMatches = ['dropbox', 'node_modules', 'favicon.ico'] " enable highlight for dropbox and node_modules folders, and favicon.ico files with default colors
-
-let g:NERDTreeLimitedSyntax = 1
-
-let g:NERDTreeSyntaxDisableDefaultExtensions = 1
-let g:NERDTreeSyntaxDisableDefaultExactMatches = 1
-let g:NERDTreeSyntaxDisableDefaultPatternMatches = 1
-let g:NERDTreeSyntaxEnabledExtensions = ['c', 'h', 'c++', 'cpp', 'php', 'rb', 'js', 'css', 'html', 'python'] " enabled extensions with default colors
-let g:NERDTreeSyntaxEnabledExactMatches = ['node_modules', 'favicon.ico'] " enabled exact matches with default colors
-let g:NERDTreeHighlightCursorline = 0
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 
@@ -228,7 +185,6 @@ nmap <F5> :source ~/.config/nvim/init.vim<CR>
 vmap <F5> :source ~/.config/nvim/init.vim<CR>
 
 nnoremap <leader>w :w<CR>
-
 
 " Move to the next buffer
 " Move to the prevoius buffer
@@ -256,10 +212,11 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
   \ 'coc-tsserver',
-  \ 'coc-eslint', 
-  \ 'coc-prettier', 
-  \ 'coc-json', 
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
   \ 'coc-python',
+  \ 'coc-html'
   \ ]
 
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
@@ -271,19 +228,94 @@ let g:ycm_complete_in_strings = 1 " Completion in string
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "javascript" }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = { "c", "rust" },  -- list of language that will be disabled
   },
 }
 
-
 EOF
+
+lua << EOF
+  require("trouble").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
+
+nnoremap <leader>xx <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+
+let g:vim_vue_plugin_config = {
+      \'syntax': {
+      \   'template': ['html', 'pug'],
+      \   'script': ['javascript', 'typescript', 'coffee'],
+      \   'style': ['css', 'scss', 'sass', 'less', 'stylus'],
+      \   'i18n': ['json', 'yaml'],
+      \   'route': 'json',
+      \},
+      \'full_syntax': ['json'],
+      \'initial_indent': ['i18n', 'i18n.json', 'yaml'],
+      \'attribute': 1,
+      \'keyword': 1,
+      \'foldexpr': 1,
+      \'debug': 0,
+      \}
+
+" Example
+autocmd FileType vue inoremap <buffer><expr> : InsertColon()
+
+function! InsertColon()
+  let tag = GetVueTag()
+  return tag == 'template' ? ':' : ': '
+endfunction
+
+" Example: set local options based on syntax
+function! OnChangeVueSyntax(syntax)
+  echom 'Syntax is '.a:syntax
+  if a:syntax == 'html'
+    setlocal commentstring=<!--%s-->
+    setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
+  elseif a:syntax =~ 'css'
+    setlocal comments=s1:/*,mb:*,ex:*/ commentstring&
+  else
+    setlocal commentstring=//%s
+    setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+  endif
+endfunction
+
 
 " Close the current buffer
 "create a new tab
 nnoremap <leader>q :bdelete<CR>
+
+let g:vim_vue_plugin_config = {
+      \'syntax': {
+      \   'template': ['html'],
+      \   'script': ['javascript'],
+      \   'style': ['css'],
+      \},
+      \'full_syntax': [],
+      \'initial_indent': [],
+      \'attribute': 0,
+      \'keyword': 0,
+      \'foldexpr': 0,
+      \'debug': 0,
+      \}
+
+let g:closetag_filetypes = 'html,xhtml,phtml,javascript,typescript'
+let g:closetag_regions = {
+      \ 'typescript.tsx': 'jsxRegion,tsxRegion,litHtmlRegion',
+      \ 'javascript.jsx': 'jsxRegion,litHtmlRegion',
+      \ 'javascript':     'litHtmlRegion',
+      \ 'typescript':     'litHtmlRegion',
+      \ }
+
 
 " open new split panes to right and below
 set splitright
@@ -294,8 +326,8 @@ tnoremap <Esc> <C-\><C-n>
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 " open terminal on ctrl+n
 function! OpenTerminal()
-  split term://zsh
-  resize 10
+split term://zsh
+resize 10
 endfunction
 nnoremap <c-n> :call OpenTerminal()<CR>
 
@@ -330,12 +362,12 @@ nnoremap <leader>t :tabe<CR>
 "noremap <left> <nop>
 "noremap <right> <nop>
 
-nnoremap <C-p> :FZF<CR>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit'
-  \}
+"nnoremap <C-p> :FZF<CR>
+"let g:fzf_action = {
+"  \ 'ctrl-t': 'tab split',
+"  \ 'ctrl-s': 'split',
+"  \ 'ctrl-v': 'vsplit'
+"  \}
 
 let g:pep8_map='<leader>f'
 let python_pep8_indent_hang_closing = 1
@@ -348,6 +380,11 @@ endif
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
+
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 "vim emmet configuration
 let g:user_emmet_leader_key='<C-Z>'
@@ -494,13 +531,13 @@ let g:airline#themes#transparent#palette.insert_modified.airline_error =
 
 let g:airline#themes#transparent#palette.insert_modified.airline_error =
       \ g:airline#themes#transparent#palette.normal.airline_error
- 
+
 let g:airline#themes#transparent#palette.visual.airline_error =
       \ g:airline#themes#transparent#palette.normal.airline_error
 
 let g:airline#themes#transparent#palette.visual_modified.airline_error =
       \ g:airline#themes#transparent#palette.normal.airline_error
- 
+
 let g:airline#themes#transparent#palette.replace.airline_error =
       \ g:airline#themes#transparent#palette.normal.airline_error
 
